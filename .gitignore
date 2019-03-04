@@ -1,6 +1,10 @@
 *.c
 *.html
 *.pyc
+*.pyd
 *.pyo
+*.so
+.venv
 __pycache__/
 bot_token.txt
+config.yaml
