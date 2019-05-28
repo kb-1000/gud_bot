@@ -1,8 +1,8 @@
 from django.db import models
 
 
-class Constraints(models.Model):
-    guild = models.IntegerField()
+class Constraint(models.Model):
+    guild = models.BigIntegerField()
     maxlevel = models.IntegerField(blank=True, null=True)
     minlevel = models.IntegerField(blank=True, null=True)
-    rank = models.IntegerField()
+    role = models.BigIntegerField()

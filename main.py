@@ -3,7 +3,7 @@ from discord.ext import commands
 import yaml
 
 with open("config.yaml", "r", encoding="utf-8") as fp:
-    config = yaml.load(fp)
+    config = yaml.unsafe_load(fp)
 
 with open("config.yaml", "w", encoding="utf-8") as fp:
     yaml.dump(config, fp, default_flow_style=False)
