@@ -55,3 +55,6 @@ class Roles(commands.Cogs):
         await ctx.author.add_roles(self.guild.get_role()) # TODO
         if ctx.message is not None:
             await ctx.message.add_reaction("\u2705")
+
+def setup(bot):
+    bot.add_cog(Roles(bot))
