@@ -1,7 +1,7 @@
 from discord.ext import commands
 from kb1000_discordpy_common import force_async
 
-class Roles(commands.Cogs):
+class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         bot.loop.create_task(self.init())
