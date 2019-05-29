@@ -1,4 +1,4 @@
-from dicord.ext import commands
+from discord.ext import commands
 from kb1000_discordpy_common import force_async
 
 class Roles(commands.Cogs):
