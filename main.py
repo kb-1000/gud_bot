@@ -3,7 +3,7 @@ from discord.ext import commands
 import yaml
 import os
 
-with open("config.yaml" if os.path.isfile("config.yaml") else "config.heroku.yaml", "r", encoding="utf-8") as fp:
+with open("config.yaml" if os.path.isfile("config.yaml") else "config.yaml.heroku", "r", encoding="utf-8") as fp:
     config = yaml.unsafe_load(fp)
 
 with open("config.yaml", "w", encoding="utf-8") as fp:
@@ -13,6 +13,7 @@ bot = commands.Bot(command_prefix=["$ ", "*", "$"], description="Gud Bot")
 bot.config = config
 bot.load_extension("m6rr")
 bot.load_extension("jishaku")
+bot.load_extension("roles")
 
 
 @bot.event

@@ -19,3 +19,39 @@ class Roles(commands.Cogs):
         await ctx.author.add_roles(self.guild.get_role(560154541773946930))
         if ctx.message is not None:
             await ctx.message.add_reaction("\u2705")
+
+    @commands.command(name="c#")
+    @force_async
+    async def c_sharp(self, ctx):
+        if ctx.guild != self.guild:
+            return
+        await ctx.author.add_roles(self.guild.get_role(582967119478784040))
+        if ctx.message is not None:
+            await ctx.message.add_reaction("\u2705")
+
+    @commands.command()
+    @force_async
+    async def python(self, ctx):
+        if ctx.guild != self.guild:
+            return
+        await ctx.author.add_roles(self.guild.get_role(582942083883597863))
+        if ctx.message is not None:
+            await ctx.message.add_reaction("\u2705")
+
+    @commands.command()
+    @force_async
+    async def web(self, ctx):
+        if ctx.guild != self.guild:
+            return
+        await ctx.author.add_roles(self.guild.get_role(582967306028843199))
+        if ctx.message is not None:
+            await ctx.message.add_reaction("\u2705")
+
+    @commands.command(name="c++")
+    @force_async
+    async def cplusplus(self, ctx):
+        if ctx.guild != self.guild:
+            return
+        await ctx.author.add_roles(self.guild.get_role()) # TODO
+        if ctx.message is not None:
+            await ctx.message.add_reaction("\u2705")
