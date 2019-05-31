@@ -25,7 +25,7 @@ class Roles(commands.Cog):
     async def c_sharp(self, ctx):
         if ctx.guild != self.guild:
             return
-        await ctx.author.add_roles(self.guild.get_role(582967119478784040))
+        await ctx.author.add_roles(self.guild.get_role(560154254493614080))
         if ctx.message is not None:
             await ctx.message.add_reaction("\u2705")
 
@@ -43,7 +43,7 @@ class Roles(commands.Cog):
     async def web(self, ctx):
         if ctx.guild != self.guild:
             return
-        await ctx.author.add_roles(self.guild.get_role(582967306028843199))
+        await ctx.author.add_roles(self.guild.get_role(560156356770791444))
         if ctx.message is not None:
             await ctx.message.add_reaction("\u2705")
 
@@ -52,7 +52,7 @@ class Roles(commands.Cog):
     async def cplusplus(self, ctx):
         if ctx.guild != self.guild:
             return
-        await ctx.author.add_roles(self.guild.get_role()) # TODO
+        await ctx.author.add_roles(self.guild.get_role(560154750046175236))
         if ctx.message is not None:
             await ctx.message.add_reaction("\u2705")
 
