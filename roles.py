@@ -34,7 +34,7 @@ class Roles(commands.Cog):
     async def python(self, ctx):
         if ctx.guild != self.guild:
             return
-        await ctx.author.add_roles(self.guild.get_role(582942083883597863))
+        await ctx.author.add_roles(self.guild.get_role(581870128908730381))
         if ctx.message is not None:
             await ctx.message.add_reaction("\u2705")
 
