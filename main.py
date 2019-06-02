@@ -9,7 +9,9 @@ with open("config.yaml" if os.path.isfile("config.yaml") else "config.yaml.herok
 with open("config.yaml", "w", encoding="utf-8") as fp:
     yaml.dump(config, fp, default_flow_style=False)
 
-bot = commands.Bot(command_prefix=["$ ", "*", "$"], description="Gud Bot", case_insensitive=True)
+bot = commands.Bot(
+    command_prefix=["$ ", "*", "$"],
+    description="Gud Bot", case_insensitive=True)
 bot.config = config
 bot.load_extension("m6rr")
 bot.load_extension("jishaku")
@@ -20,7 +22,7 @@ bot.load_extension("roles")
 async def on_ready():
     print(
         f'\n\nLogged in as: {bot.user.name} - {bot.user.id}\nVersion: {discord.__version__}\n')
-    await bot.change_presence(activity=discord.Game(name="$ help"))
+    await bot.change_presence(activity=discord.Game(name="$ help (made by kb1000#3709!)"))
     print('Successfully set rich presence')
 
 if os.path.isfile("bot_token.txt"):
