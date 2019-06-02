@@ -1,5 +1,16 @@
 from discord.ext import commands
 from kb1000_discordpy_common import force_async
+import functools
+import typing
+
+@functools.lru_cache(maxsize=None)
+def in_guild(id_: int) -> typing.Callable[[commands.Command], commands.Command]:
+    # this decorator turns this into a decorator itself
+    @commands.check
+    def actual_check(ctx: commands.Context) -> bool:
+        return ctx.guild.id == id_
+    return actual_check
+
 
 class Roles(commands.Cog):
     def __init__(self, bot):
@@ -11,14 +22,36 @@ class Roles(commands.Cog):
         await self.bot.wait_until_ready()
         self.guild = self.bot.get_guild(560151801471565885)
 
-    @commands.command()
-    @force_async
-    async def java(self, ctx):
-        if ctx.guild != self.guild:
-            return
-        await ctx.author.add_roles(self.guild.get_role(560154541773946930))
-        if ctx.message is not None:
-            await ctx.message.add_reaction("\u2705")
+    def make_role_command(name, snowflake, cmd_name=None):
+        @force_async
+        async def command(self, ctx):
+            role = self.guild.get_role(snowflake)
+            if role not in ctx.author.roles:
+                await ctx.author.add_roles(role)
+            else:
+                await ctx.author.remove_roles(role)
+            if ctx.message is not None:
+                await ctx.message.add_reaction("\u2705")
+
+        command.__name__ = name
+
+        if cmd_name:
+            command = commands.command(name=cmd_name)(command)
+        else:
+            command = commands.command()(command)
+
+        return in_guild(560151801471565885)(command)
+
+    #@commands.command()
+    #@force_async
+    #async def java(self, ctx):
+    #    if ctx.guild != self.guild:
+    #        return
+    #    await ctx.author.add_roles(self.guild.get_role(560154541773946930))
+    #    if ctx.message is not None:
+    #        await ctx.message.add_reaction("\u2705")
+
+    java = make_role_command("java", 560154541773946930)
 
     @commands.command(name="c#")
     @force_async
@@ -38,15 +71,6 @@ class Roles(commands.Cog):
         if ctx.message is not None:
             await ctx.message.add_reaction("\u2705")
 
-    @commands.command()
-    @force_async
-    async def web(self, ctx):
-        if ctx.guild != self.guild:
-            return
-        await ctx.author.add_roles(self.guild.get_role(560156356770791444))
-        if ctx.message is not None:
-            await ctx.message.add_reaction("\u2705")
-
     @commands.command(name="c++")
     @force_async
     async def cplusplus(self, ctx):
@@ -55,6 +79,7 @@ class Roles(commands.Cog):
         await ctx.author.add_roles(self.guild.get_role(560154750046175236))
         if ctx.message is not None:
             await ctx.message.add_reaction("\u2705")
+
 
 def setup(bot):
     bot.add_cog(Roles(bot))
