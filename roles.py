@@ -80,6 +80,11 @@ class Roles(commands.Cog):
         if ctx.message is not None:
             await ctx.message.add_reaction("\u2705")
 
+    c = make_role_command("c", 584379452071608340)
+    css = make_role_command("css", 584380053500985382)
+    html = make_role_command("html", 584379964850307072)
+    php = make_role_command("php", 584379817219063818)
+
 
 def setup(bot):
     bot.add_cog(Roles(bot))
