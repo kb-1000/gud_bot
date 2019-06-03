@@ -10,7 +10,6 @@ import db
 import yaml
 
 
-
 class M6RR(commands.Cog, name="M6RR"):
     def __init__(self, bot):
         self.bot = bot
@@ -21,7 +20,8 @@ class M6RR(commands.Cog, name="M6RR"):
         await self.bot.wait_until_ready()
         mee6 = self.bot.get_user(159985870458322944)
         while True:
-            for guild in (guild for guild in self.bot.guilds if mee6 in guild.members):
+            for guild in (guild for guild in self.bot.guilds
+                          if mee6 in guild.members):
                 if guild.members:
                     await self.update_guild(guild)
             await asyncio.sleep(120)
@@ -59,7 +59,8 @@ class M6RR(commands.Cog, name="M6RR"):
                 elif maxlevel is not None and level > maxlevel:
                     state = False
                 bot_user = guild.get_member(int(user["id"]))
-                if state and guild.get_role(constraint["role"]) not in bot_user.roles:
+                if state and guild.get_role(
+                        constraint["role"]) not in bot_user.roles:
                     await bot_user.add_roles(guild.get_role(constraint["role"]))
 
 
