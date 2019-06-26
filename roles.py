@@ -84,6 +84,7 @@ class Roles(commands.Cog):
     css = make_role_command("css", 584380053500985382)
     html = make_role_command("html", 584379964850307072)
     php = make_role_command("php", 584379817219063818)
+    javascript = make_role_command("javascript", 592386652597649448)
 
 
 def setup(bot):
