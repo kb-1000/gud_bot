@@ -1,7 +1,9 @@
+import discord
 from discord.ext import commands
 from kb1000_discordpy_common import force_async
 import functools
 import typing
+
 
 @functools.lru_cache(maxsize=None)
 def in_guild(id_: int) -> typing.Callable[[commands.Command], commands.Command]:
@@ -9,11 +11,15 @@ def in_guild(id_: int) -> typing.Callable[[commands.Command], commands.Command]:
     @commands.check
     def actual_check(ctx: commands.Context) -> bool:
         return ctx.guild.id == id_
+
     return actual_check
 
 
 class Roles(commands.Cog):
-    def __init__(self, bot):
+    bot: commands.Bot
+    guild: discord.Guild
+
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         bot.loop.create_task(self.init())
 
@@ -22,8 +28,7 @@ class Roles(commands.Cog):
         await self.bot.wait_until_ready()
         self.guild = self.bot.get_guild(560151801471565885)
 
-    def make_role_command(name, snowflake, cmd_name=None):
-        @force_async
+    def _make_role_command(name: str, snowflake: int, cmd_name: typing.Optional[str] = None):
         async def command(self, ctx):
             role = self.guild.get_role(snowflake)
             if role not in ctx.author.roles:
@@ -42,49 +47,15 @@ class Roles(commands.Cog):
 
         return in_guild(560151801471565885)(command)
 
-    #@commands.command()
-    #@force_async
-    #async def java(self, ctx):
-    #    if ctx.guild != self.guild:
-    #        return
-    #    await ctx.author.add_roles(self.guild.get_role(560154541773946930))
-    #    if ctx.message is not None:
-    #        await ctx.message.add_reaction("\u2705")
-
-    java = make_role_command("java", 560154541773946930)
-
-    @commands.command(name="c#")
-    @force_async
-    async def c_sharp(self, ctx):
-        if ctx.guild != self.guild:
-            return
-        await ctx.author.add_roles(self.guild.get_role(560154254493614080))
-        if ctx.message is not None:
-            await ctx.message.add_reaction("\u2705")
-
-    @commands.command()
-    @force_async
-    async def python(self, ctx):
-        if ctx.guild != self.guild:
-            return
-        await ctx.author.add_roles(self.guild.get_role(581870128908730381))
-        if ctx.message is not None:
-            await ctx.message.add_reaction("\u2705")
-
-    @commands.command(name="c++")
-    @force_async
-    async def cplusplus(self, ctx):
-        if ctx.guild != self.guild:
-            return
-        await ctx.author.add_roles(self.guild.get_role(560154750046175236))
-        if ctx.message is not None:
-            await ctx.message.add_reaction("\u2705")
-
-    c = make_role_command("c", 584379452071608340)
-    css = make_role_command("css", 584380053500985382)
-    html = make_role_command("html", 584379964850307072)
-    php = make_role_command("php", 584379817219063818)
-    javascript = make_role_command("javascript", 592386652597649448)
+    java = _make_role_command("java", 560154541773946930)
+    c_sharp = _make_role_command("c#", 560154254493614080)
+    python = _make_role_command("python", 581870128908730381)
+    cplusplus = _make_role_command("cplusplus", 560154750046175236, "c++")
+    c = _make_role_command("c", 584379452071608340)
+    css = _make_role_command("css", 584380053500985382)
+    html = _make_role_command("html", 584379964850307072)
+    php = _make_role_command("php", 584379817219063818)
+    javascript = _make_role_command("javascript", 592386652597649448)
 
 
 def setup(bot):

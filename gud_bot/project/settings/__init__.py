@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'm6rr',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'gudbot_db.urls'
+ROOT_URLCONF = 'gud_bot.project.urls'
 
 TEMPLATES = [
     {
@@ -68,18 +67,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'gudbot_db.wsgi.application'
+WSGI_APPLICATION = 'gud_bot.project.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'M6RR',
-    }
-}
+from .db import *
 
 
 # Password validation
