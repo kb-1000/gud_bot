@@ -1,4 +1,4 @@
--e git+https://github.com/Rapptz/discord.py@master#egg=discord.py
+discord.py
 jishaku
 pyyaml
 asyncpg

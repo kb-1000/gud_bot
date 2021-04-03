@@ -41,7 +41,8 @@ def make_bot() -> GudBot:
     intents = discord.Intents.default()
     intents.members = True
 
-    with open(config_directory / ("config.yaml" if os.path.isfile(config_directory / "config.yaml") else "config.yaml.heroku"), "r",
+    with open(config_directory / (
+            "config.yaml" if os.path.isfile(config_directory / "config.yaml") else "config.yaml.heroku"), "r",
               encoding="utf-8") as fp:
         config: Config = yaml.unsafe_load(fp)
 
