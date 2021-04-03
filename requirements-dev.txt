@@ -12,7 +12,9 @@
 aiohttp==3.7.4.post0
     # via discord.py
 asgiref==3.3.1
-    # via django
+    # via
+    #   -r requirements.in
+    #   django
 astroid==2.5.2
     # via pylint
 astunparse==1.6.3
@@ -29,8 +31,12 @@ chardet==4.0.0
     # via aiohttp
 click==7.1.2
     # via pip-tools
+django-stubs==1.7.0
+    # via -r requirements-dev.in
 django==3.1.7
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   django-stubs
 humanize==3.3.0
     # via jishaku
 idna==3.1
@@ -53,6 +59,12 @@ multidict==5.1.0
     # via
     #   aiohttp
     #   yarl
+mypy-extensions==0.4.3
+    # via mypy
+mypy==0.812
+    # via
+    #   -r requirements-dev.in
+    #   django-stubs
 parso==0.8.2
     # via jedi
 pep517==0.10.0
@@ -77,8 +89,13 @@ toml==0.10.2
     # via
     #   pep517
     #   pylint
+typed-ast==1.4.2
+    # via mypy
 typing-extensions==3.7.4.3
-    # via aiohttp
+    # via
+    #   aiohttp
+    #   django-stubs
+    #   mypy
 wheel==0.36.2
     # via
     #   -r requirements-dev.in
