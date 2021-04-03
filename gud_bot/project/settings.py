@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+import dj_database_url
+
+from ..config import config as GUD_BOT_CONFIG
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -70,9 +74,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gud_bot.project.wsgi.application'
 
+# Database
+# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-from .db import *
-
+DATABASES = {
+    'default': dj_database_url.parse(GUD_BOT_CONFIG['database'])
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

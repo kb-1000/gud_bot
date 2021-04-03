@@ -7,3 +7,4 @@ kb1000_discordpy_common>=1.3
 psutil
 psycopg2
 asgiref
+dj-database-url
