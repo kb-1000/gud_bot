@@ -38,7 +38,8 @@ class GudBot(commands.Bot):
 def make_bot() -> GudBot:
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gud_bot.project.settings')
     django.setup()
-    intents = discord.Intents(members=True)
+    intents = discord.Intents.default()
+    intents.members = True
 
     with open(config_directory / ("config.yaml" if os.path.isfile("config.yaml") else "config.yaml.heroku"), "r",
               encoding="utf-8") as fp:
