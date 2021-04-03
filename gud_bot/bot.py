@@ -8,7 +8,7 @@ import yaml
 from discord.ext import commands
 
 config_directory = pathlib.Path(
-    os.environ.get("GUD_BOT_CONFIG_DIR", pathlib.Path(__file__).absolute().parent.parent)).absolute()
+    os.environ.get("GUD_BOT_CONFIG_DIR", pathlib.Path(__file__).resolve().parent.parent)).resolve()
 
 
 class Config(typing.TypedDict):
