@@ -1,8 +1,6 @@
-import sys
-import pathlib
 import itertools
-
-from gud_bot.bot import make_bot
+import pathlib
+import sys
 
 if __name__ == "__main__":
     bot_module_dir = pathlib.Path(__file__).absolute().parent
@@ -15,5 +13,7 @@ if __name__ == "__main__":
         except FileNotFoundError:
             # can't be the same file if it doesn't exist
             pass
+
+    from gud_bot.bot import make_bot
 
     make_bot().run()
