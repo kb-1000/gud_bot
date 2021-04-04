@@ -8,3 +8,5 @@ psutil
 psycopg2
 asgiref
 dj-database-url
+daphne
+twisted[http2,tls]
