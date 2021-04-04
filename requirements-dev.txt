@@ -94,9 +94,9 @@ click==7.1.2 \
     --hash=sha256:d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a \
     --hash=sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc
     # via pip-tools
-discord.py==1.6.0 \
-    --hash=sha256:3df148daf6fbcc7ab5b11042368a3cd5f7b730b62f09fb5d3cbceff59bcfbb12 \
-    --hash=sha256:ba8be99ff1b8c616f7b6dcb700460d0222b29d4c11048e74366954c465fdd05f
+discord.py==1.7.0 \
+    --hash=sha256:1b05150e767c4a18941d863d819844ecef8395b0ca3784055d78770b8fa70b68 \
+    --hash=sha256:330edfa11e59c1d1eae31e68f02f8cfcea2702813439dfe58dd587018979e1c9
     # via
     #   -r requirements.in
     #   jishaku
