@@ -1,9 +1,0 @@
--r requirements.in
-jedi
-pylint
-pip
-wheel
-setuptools
-pip-tools
-mypy
-django-stubs

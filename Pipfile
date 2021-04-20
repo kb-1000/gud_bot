@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"discord.py" = "*"
+jishaku = "*"
+asyncpg = "*"
+kb1000-discordpy-common = ">=1.3"
+psutil = "*"
+psycopg2 = "*"
+asgiref = "*"
+dj-database-url = "*"
+daphne = "*"
+PyYAML = "*"
+Django = ">2"
+Twisted = {extras = ["http2", "tls"], version = "*"}
+
+[dev-packages]
+jedi = "*"
+pylint = "*"
+mypy = "*"
+django-stubs = "*"
+
+[requires]
+python_version = "3.8"
