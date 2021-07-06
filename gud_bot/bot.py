@@ -20,7 +20,7 @@ class GudBot(commands.Bot):
     async def on_ready(self):
         print(
             f'\n\nLogged in as: {self.user.name} - {self.user.id}\nVersion: {discord.__version__}\n')
-        await self.change_presence(activity=discord.Game(name="$ help (made by kb1000#3709!)"))
+        await self.change_presence(activity=discord.Game(name=self.config["presence"]))
         print('Successfully set rich presence')
 
 
