@@ -30,7 +30,7 @@ def make_bot() -> GudBot:
     intents = discord.Intents.default()
     intents.members = True
 
-    bot = GudBot(command_prefix=commands.when_mentioned_or("$ ", "*", "$", "?"),
+    bot = GudBot(command_prefix=commands.when_mentioned_or("$ ", "$"),
                  description="Gud Bot", case_insensitive=True,
                  intents=intents, config=config)
     bot.load_extension("jishaku")
