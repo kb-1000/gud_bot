@@ -266,14 +266,6 @@
             ],
             "version": "==3.0.0"
         },
-        "humanize": {
-            "hashes": [
-                "sha256:aab7625d62dd5e0a054c8413a47d1fa257f3bdd8e9a2442c2fe36061bdd1d9bf",
-                "sha256:b2413730ce6684f85e0439a5b80b8f402e09f03e16ab8023d1da758c6ff41148"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==3.10.0"
-        },
         "hyperframe": {
             "hashes": [
                 "sha256:5187962cb16dcc078f23cb5a4b110098d546c3f41ff2d4038a9896893bbd0b40",
@@ -311,13 +303,13 @@
         },
         "jishaku": {
             "hashes": [
-                "sha256:1e3626c85b60c93ed32798ea32291b23e5b39031e7c48f903fb896437e7c0a78",
-                "sha256:276e186e6ef99a23cb667efe64a0ae2de9e49f7cfd10f5fbfe4db4eb30379183",
-                "sha256:7ac6fd1f2a048fae78299b800be555aec012631e40c96438f7d9201538b09c0c",
-                "sha256:9e31e43117c14cd785ec8578dde524bf00d94186cd0178d61759183c8d706319"
+                "sha256:28f0751934896024780b642dbae18d55be5535ab20839322c69b6fdba42e384d",
+                "sha256:9dc9e4e6a415aab6dc06e6e0a3fe1ea4370a708169fd837b56ceb8e6016ff673",
+                "sha256:d593815faa7872d4288f93df2b31d43855bb313adc99c687c86408bdc06feb80",
+                "sha256:ea5e25deb683483421e24d178cdee6ba61510f6e60c02cada548e19f60b6d996"
             ],
             "index": "pypi",
-            "version": "==2.0.0"
+            "version": "==2.1.0"
         },
         "kb1000-discordpy-common": {
             "hashes": [
@@ -539,7 +531,7 @@
                 "sha256:017cde379adbd6a1f15a61873f43e8274179378e95ef3fede90b5aa64d304ed0",
                 "sha256:0f91fd2e829c44362cbcfab3e9ae12e22badaa8a29ad5ff599f9ec109f0454e8"
             ],
-            "markers": "python_version >= '3.5'",
+            "markers": "python_full_version >= '3.5.0'",
             "version": "==0.4.1"
         },
         "twisted": {
@@ -835,7 +827,7 @@
                 "sha256:017cde379adbd6a1f15a61873f43e8274179378e95ef3fede90b5aa64d304ed0",
                 "sha256:0f91fd2e829c44362cbcfab3e9ae12e22badaa8a29ad5ff599f9ec109f0454e8"
             ],
-            "markers": "python_version >= '3.5'",
+            "markers": "python_full_version >= '3.5.0'",
             "version": "==0.4.1"
         },
         "toml": {
