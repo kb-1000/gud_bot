@@ -16,6 +16,7 @@ daphne = "*"
 PyYAML = "*"
 Django = ">2"
 Twisted = {extras = ["http2", "tls"], version = "*"}
+uvloop = "*"
 
 [dev-packages]
 jedi = "*"

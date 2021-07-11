@@ -3,6 +3,9 @@ import pathlib
 import sys
 
 if __name__ == "__main__":
+    import uvloop
+    import asyncio
+    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
     bot_module_dir = pathlib.Path(__file__).absolute().parent
     bot_dir = bot_module_dir.parent
 
