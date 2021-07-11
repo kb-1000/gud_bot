@@ -22,6 +22,7 @@ jedi = "*"
 pylint = "*"
 mypy = "*"
 django-stubs = "*"
+types-PyYAML = "*"
 
 [requires]
 python_version = "3.9"
