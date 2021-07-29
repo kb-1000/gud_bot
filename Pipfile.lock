@@ -536,11 +536,11 @@
                 "tls"
             ],
             "hashes": [
-                "sha256:77544a8945cf69b98d2946689bbe0c75de7d145cdf11f391dd487eae8fc95a12",
-                "sha256:aab38085ea6cda5b378b519a0ec99986874921ee8881318626b0a3414bb2631e"
+                "sha256:13c1d1d2421ae556d91e81e66cf0d4f4e4e1e4a36a0486933bee4305c6a4fb9b",
+                "sha256:2cd652542463277378b0d349f47c62f20d9306e57d1247baabd6d1d38a109006"
             ],
             "index": "pypi",
-            "version": "==21.2.0"
+            "version": "==21.7.0"
         },
         "txaio": {
             "hashes": [
