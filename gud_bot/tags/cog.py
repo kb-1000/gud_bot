@@ -79,6 +79,10 @@ class Tags(commands.Cog, name="Tags"):
     def untrust_role(self, guild_id: int, role_id: int):
         TrustedRole.objects.get(guild_id=guild_id, role_id=role_id).delete()
 
+    @sync_to_async
+    def list_tags(self, guild_id: int) -> typing.List[Tag]:
+        return list(Tag.objects.filter(guild_id=guild_id))
+
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
     async def tag(self, ctx: commands.Context, name: str):
@@ -138,6 +142,15 @@ class Tags(commands.Cog, name="Tags"):
             return
         await ctx.send(f"\N{WHITE HEAVY CHECK MARK} Tag \"{name}\" removed successfully.",
                        allowed_mentions=discord.AllowedMentions.none())
+
+    @tag.command("list")
+    @commands.guild_only()
+    async def tag_list(self, ctx: commands.Context):
+        tags = await self.list_tags(ctx.guild.id)
+        tags_string = "\n".join(tag.name for tag in tags)
+        embed = discord.Embed(description=tags_string)
+        embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        await ctx.send(embed=embed, allowed_mentions=discord.AllowedMentions.none())
 
     @tag.command("trust")
     @commands.guild_only()
