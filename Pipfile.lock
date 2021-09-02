@@ -877,11 +877,11 @@
         },
         "types-pyyaml": {
             "hashes": [
-                "sha256:745dcb4b1522423026bcc83abb9925fba747f1e8602d902f71a4058f9e7fb662",
-                "sha256:96f8d3d96aa1a18a465e8f6a220e02cff2f52632314845a364ecbacb0aea6e30"
+                "sha256:1d9e431e9f1f78a65ea957c558535a3b15ad67ea4912bce48a6c1b613dcf81ad",
+                "sha256:f1d1357168988e45fa20c65aecb3911462246a84809015dd889ebf8b1db74124"
             ],
             "index": "pypi",
-            "version": "==5.4.6"
+            "version": "==5.4.10"
         },
         "typing-extensions": {
             "hashes": [
