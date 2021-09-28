@@ -1,6 +1,0 @@
-database: !!python/object/new:os.getenv [DATABASE_URL]
-extensions:
-- gud_bot.tags.cog
-- roles
-presence: $ help (made by kb1000#3709!)
-token: !!python/object/new:os.getenv [BOT_TOKEN]

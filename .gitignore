@@ -1,12 +1,56 @@
-*.c
-*.html
+# gradle
+
+.gradle/
+build/
+out/
+classes/
+
+# idea
+
+/.idea/*
+!/.idea/codeStyles
 *.iml
-*.pyc
-*.pyd
-*.pyo
-*.so
-.idea
-.venv
-__pycache__
+*.ipr
+*.iws
+
+# vscode
+
+.settings/
+.vscode/
+bin/
+.classpath
+.project
+
+# java
+
+*.jar
+*.class
+!/gradle/wrapper/gradle-wrapper.jar
+
+# python
+
+__pycache__/
+*.py[co]
+
+# config
+
 config.yaml
-venv
+
+# logs
+
+*.log
+*.gz
+
+# other stuff
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[tT]humbs.db
+*.sw[po]
+.directory
+*~
+hs_err*.log

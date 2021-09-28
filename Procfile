@@ -1,1 +1,0 @@
-worker: python -m gud_bot

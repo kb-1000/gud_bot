@@ -1,0 +1,13 @@
+* text=auto
+
+# Gradle wrapper
+*.bat text eol=crlf
+gradlew eol=lf
+*.jar binary
+
+# Set source files to use UNIX line endings
+*.kt eol=lf
+*.java eol=lf
+*.kts eol=lf
+*.properties eol=lf
+*.groovy eol=lf
