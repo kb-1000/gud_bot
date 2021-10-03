@@ -20,16 +20,17 @@ import dev.kord.common.entity.Permission
 import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.entity.Member
 import dev.kord.core.event.gateway.ReadyEvent
+import dev.kord.rest.Image
+import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.create.allowedMentions
+import dev.kord.rest.builder.message.create.embed
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.notInList
 import org.ktorm.dsl.or
-import org.ktorm.entity.add
-import org.ktorm.entity.find
-import org.ktorm.entity.removeIf
+import org.ktorm.entity.*
 import java.sql.SQLIntegrityConstraintViolationException
 import java.time.Instant
 
@@ -308,6 +309,30 @@ class TagExtension : Extension() {
                                 "\u274c ${arguments.role.mention} (${arguments.role.name}) is not on the trust list."
                             allowedMentions {
                             }
+                        }
+                    }
+                }
+            }
+
+            publicSubCommand() {
+                name = "list"
+                description = "List tags"
+
+                check { anyGuild() }
+
+                action {
+                    val guild = guild!!.asGuild()
+                    respond {
+                        embed {
+                            description = database.tags.filter { it.guildId eq guild.id.value }.mapColumns { it.name }
+                                .joinToString("\n")
+                            author {
+                                name = guild.name
+                                icon = guild.getIconUrl(Image.Format.WEBP)
+                            }
+                        }
+
+                        allowedMentions {
                         }
                     }
                 }
