@@ -416,6 +416,21 @@ class TagExtension : Extension() {
                     }
                 }
             }
+
+            chatCommand(::TagNameArgs) {
+                name = "tag"
+                description = "Display a tag's contents"
+
+                check { anyGuild() }
+
+                action {
+                    channel.createMessage {
+                        content = database.tags.find { (it.name eq arguments.name) and (it.guildId eq guild!!.id.value) }?.content ?: "\u274c Tag not found."
+                        allowedMentions {
+                        }
+                    }
+                }
+            }
         }
 
         for (tag in database.tags) {
