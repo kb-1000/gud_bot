@@ -1,4 +1,5 @@
 @file:JvmName("Main")
+
 package de.kb1000.gudbot
 
 import com.kotlindiscord.kord.extensions.ExtensibleBot
@@ -14,7 +15,7 @@ suspend fun main() {
             config.presence?.let(this::playing)
         }
         applicationCommands {
-            config.testGuild?.let(this::defaultGuild)
+            config.testGuild?.let { this.defaultGuild(it.toLong()) }
         }
 
         extensions {

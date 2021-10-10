@@ -15,12 +15,16 @@ private fun connect(): Database {
         transactionManager = JdbcTransactionManager { dataSource.connection },
         exceptionTranslator = { ex ->
             when {
-                ex.sqlState.startsWith("23") -> SQLIntegrityConstraintViolationException(ex.message, ex.sqlState, ex.errorCode, ex)
+                ex.sqlState.startsWith("23") -> SQLIntegrityConstraintViolationException(
+                    ex.message,
+                    ex.sqlState,
+                    ex.errorCode,
+                    ex
+                )
                 else -> ex
             }
         }
     )
-    return Database.connect(dataSource)
 }
 
 val database by lazy(::connect)

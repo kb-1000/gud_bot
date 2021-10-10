@@ -5,6 +5,7 @@ import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.event
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.event.gateway.ReadyEvent
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.nio.file.Files
 import kotlin.io.path.Path
@@ -15,8 +16,13 @@ data class Config(
     val presence: String? = null,
     val token: String,
     val environment: String,
-    val testGuild: Long? = null,
-)
+    @SerialName("testGuild")
+    @JvmField
+    private val _testGuild: Long? = null,
+) {
+    val testGuild
+        get() = _testGuild?.toULong()
+}
 
 private fun loadConfig() = Files.newInputStream(Path("config.yaml")).use {
     Yaml.default.decodeFromStream(Config.serializer(), it)
@@ -37,7 +43,7 @@ class ConfigExtension : Extension() {
                 val appOwner = appInfo.ownerId
                 val teamOwner = appInfo.team?.ownerUserId
                 val teamUsers = appInfo.team?.members?.map { it.userId } ?: listOf()
-                val mutableOwnerIds = mutableSetOf(appOwner, *teamUsers.toTypedArray())
+                val mutableOwnerIds = mutableListOf(appOwner, *teamUsers.toTypedArray())
                 if (teamOwner != null) {
                     mutableOwnerIds.add(teamOwner)
                 }

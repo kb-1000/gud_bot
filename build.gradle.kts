@@ -17,6 +17,7 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     implementation(platform(kotlin("bom")))
+    implementation(platform("org.jetbrains:annotations:22.0.0"))
     implementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.0"))
     implementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.5.2"))
 
@@ -31,8 +32,8 @@ dependencies {
     implementation("org.ktorm:ktorm-support-postgresql:3.4.1")
     implementation("org.postgresql:postgresql:42.2.24")
 
-    implementation("com.kotlindiscord.kord.extensions:kord-extensions:1.5.0-SNAPSHOT")
-    implementation("com.kotlindiscord.kord.extensions:unsafe:1.5.0-SNAPSHOT")
+    implementation("com.kotlindiscord.kord.extensions:kord-extensions:1.5.1-SNAPSHOT")
+    implementation("com.kotlindiscord.kord.extensions:unsafe:1.5.1-SNAPSHOT")
 }
 
 application {

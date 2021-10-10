@@ -21,11 +21,11 @@ import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.entity.Member
 import dev.kord.core.event.gateway.ReadyEvent
 import dev.kord.rest.Image
-import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.create.allowedMentions
 import dev.kord.rest.builder.message.create.embed
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import org.jetbrains.annotations.Contract
 import org.ktorm.dsl.and
 import org.ktorm.dsl.eq
 import org.ktorm.dsl.notInList
@@ -36,7 +36,7 @@ import java.time.Instant
 
 class TagExtension : Extension() {
     override val name = "tags"
-    private val tagCommandMap = mutableMapOf<Long, MutableMap<String, PublicSlashCommand<Arguments>>>()
+    private val tagCommandMap = mutableMapOf<ULong, MutableMap<String, PublicSlashCommand<Arguments>>>()
     private val configExtension: ConfigExtension by lazy { bot.findExtension()!! }
 
     class TagContentArgs : Arguments() {
@@ -70,7 +70,7 @@ class TagExtension : Extension() {
             name = tag.name
             description = "\"${tag.name}\" tag"
 
-            guild(tag.guildId)
+            guild(tag.guildId.toLong())
 
             action {
                 respond {
@@ -87,10 +87,12 @@ class TagExtension : Extension() {
         return command
     }
 
+    @Contract(pure = true)
     private suspend fun isAdmin(member: Member): Boolean {
         return member.hasPermission(Permission.Administrator) or configExtension.ownerIds.contains(member.id)
     }
 
+    @Contract(pure = true)
     private suspend fun isTrustedUser(member: Member): Boolean {
         return isAdmin(member) or run {
             true
@@ -113,6 +115,9 @@ class TagExtension : Extension() {
                 check {
                     val member = memberFor(event)?.asMember()
                     passed = member?.let { isTrustedUser(it) } ?: false
+                    if (!passed) {
+                        fail("You don't have permission to use this command.")
+                    }
                 }
 
                 action {
@@ -150,6 +155,9 @@ class TagExtension : Extension() {
                 check {
                     val member = memberFor(event)?.asMember()
                     passed = member?.let { isTrustedUser(it) } ?: false
+                    if (!passed) {
+                        fail("You don't have permission to use this command.")
+                    }
                 }
 
                 action {
@@ -203,7 +211,12 @@ class TagExtension : Extension() {
 
                 check { anyGuild() }
 
-                check { isAdmin(memberFor(event)!!.asMember()) }
+                check {
+                    passed = isAdmin(memberFor(event)!!.asMember())
+                    if (!passed) {
+                        fail("You don't have permission to use this command.")
+                    }
+                }
 
                 action {
                     try {
@@ -234,7 +247,12 @@ class TagExtension : Extension() {
 
                 check { anyGuild() }
 
-                check { isAdmin(memberFor(event)!!.asMember()) }
+                check {
+                    passed = isAdmin(memberFor(event)!!.asMember())
+                    if (!passed) {
+                        fail("You don't have permission to use this command.")
+                    }
+                }
 
                 action {
                     try {
@@ -266,7 +284,12 @@ class TagExtension : Extension() {
 
                 check { anyGuild() }
 
-                check { isAdmin(memberFor(event)!!.asMember()) }
+                check {
+                    passed = isAdmin(memberFor(event)!!.asMember())
+                    if (!passed) {
+                        fail("You don't have permission to use this command.")
+                    }
+                }
 
                 action {
                     if (database.trustedUsers.removeIf { (it.guildId eq arguments.member.guildId.value) and (it.userId eq arguments.member.id.value) } != 0) {
@@ -293,7 +316,12 @@ class TagExtension : Extension() {
 
                 check { anyGuild() }
 
-                check { isAdmin(memberFor(event)!!.asMember()) }
+                check {
+                    passed = isAdmin(memberFor(event)!!.asMember())
+                    if (!passed) {
+                        fail("You don't have permission to use this command.")
+                    }
+                }
 
                 action {
                     if (database.trustedRoles.removeIf { (it.guildId eq arguments.role.guildId.value) and (it.roleId eq arguments.role.id.value) } != 0) {
@@ -314,7 +342,7 @@ class TagExtension : Extension() {
                 }
             }
 
-            publicSubCommand() {
+            publicSubCommand {
                 name = "list"
                 description = "List tags"
 
@@ -354,6 +382,9 @@ class TagExtension : Extension() {
                 check {
                     val member = memberFor(event)?.asMember()
                     passed = member?.let { isTrustedUser(it) } ?: false
+                    if (!passed) {
+                        fail("You don't have permission to use this command.")
+                    }
                 }
 
                 action {
@@ -393,6 +424,9 @@ class TagExtension : Extension() {
                 check {
                     val member = memberFor(event)?.asMember()
                     passed = member?.let { isTrustedUser(it) } ?: false
+                    if (!passed) {
+                        fail("You don't have permission to use this command.")
+                    }
                 }
 
                 action {
@@ -419,13 +453,15 @@ class TagExtension : Extension() {
 
             chatCommand(::TagNameArgs) {
                 name = "tag"
-                description = "Display a tag's contents"
+                description = "Display a tag'/cheeses contents"
 
                 check { anyGuild() }
 
                 action {
                     channel.createMessage {
-                        content = database.tags.find { (it.name eq arguments.name) and (it.guildId eq guild!!.id.value) }?.content ?: "\u274c Tag not found."
+                        content =
+                            database.tags.find { (it.name eq arguments.name) and (it.guildId eq guild!!.id.value) }?.content
+                                ?: "\u274c Tag not found."
                         allowedMentions {
                         }
                     }
