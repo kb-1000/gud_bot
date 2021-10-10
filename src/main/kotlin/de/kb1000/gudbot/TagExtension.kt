@@ -17,6 +17,7 @@ import com.kotlindiscord.kord.extensions.types.respond
 import com.kotlindiscord.kord.extensions.utils.hasPermission
 import de.kb1000.gudbot.database.*
 import dev.kord.common.entity.Permission
+import dev.kord.common.entity.Snowflake
 import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.entity.Member
 import dev.kord.core.event.gateway.ReadyEvent
@@ -25,16 +26,20 @@ import dev.kord.rest.builder.message.create.allowedMentions
 import dev.kord.rest.builder.message.create.embed
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import mu.KLogging
 import org.jetbrains.annotations.Contract
-import org.ktorm.dsl.and
-import org.ktorm.dsl.eq
-import org.ktorm.dsl.notInList
-import org.ktorm.dsl.or
+import org.ktorm.dsl.*
 import org.ktorm.entity.*
 import java.sql.SQLIntegrityConstraintViolationException
 import java.time.Instant
+import java.util.regex.Pattern
 
 class TagExtension : Extension() {
+    companion object : KLogging() {
+        @JvmStatic
+        val namePattern = Pattern.compile("^[\\w-]{1,32}\$", Pattern.UNICODE_CHARACTER_CLASS)
+    }
+
     override val name = "tags"
     private val tagCommandMap = mutableMapOf<ULong, MutableMap<String, PublicSlashCommand<Arguments>>>()
     private val configExtension: ConfigExtension by lazy { bot.findExtension()!! }
@@ -93,11 +98,11 @@ class TagExtension : Extension() {
     }
 
     @Contract(pure = true)
-    private suspend fun isTrustedUser(member: Member): Boolean {
-        return isAdmin(member) or run {
-            true
-        } // XXX
-    }
+    private suspend fun isTrustedUser(member: Member) = isAdmin(member) || member.roleIds.let { roleIds ->
+        roleIds.isNotEmpty() && database.trustedRoles.any {
+            (it.guildId eq member.guildId.value) and (it.roleId inList roleIds.map(Snowflake::value))
+        }
+    } || database.trustedUsers.any { (it.guildId eq member.guildId.value) and (it.userId eq member.id.value) }
 
     override suspend fun setup() {
         publicSlashCommand {
@@ -121,10 +126,19 @@ class TagExtension : Extension() {
                 }
 
                 action {
+                    val name = arguments.name.lowercase()
+                    if (!namePattern.matcher(name).matches()) {
+                        respond {
+                            content = "\u274c Error: invalid tag name \"${name}\"!"
+                            allowedMentions {
+                            }
+                        }
+                        return@action
+                    }
                     try {
                         val tag = Tag {
                             guildId = guild!!.id.value
-                            name = arguments.name
+                            this.name = name
                             creator = user.id.value
                             creationTime = Instant.now()
                             content = arguments.content
@@ -132,13 +146,13 @@ class TagExtension : Extension() {
                         database.tags.add(tag)
                         applicationCommandRegistry.register(createTagCommand(tag))
                         respond {
-                            content = "\u2705 Successfully created tag \"${arguments.name}\""
+                            content = "\u2705 Successfully created tag \"${name}\""
                             allowedMentions {
                             }
                         }
                     } catch (_: SQLIntegrityConstraintViolationException) {
                         respond {
-                            content = "\u274c Error: tag \"${arguments.name}\" already exists"
+                            content = "\u274c Error: tag \"${name}\" already exists"
                             allowedMentions {
                             }
                         }
@@ -192,8 +206,9 @@ class TagExtension : Extension() {
                     val isAdmin = isAdmin(member!!.asMember())
                     val removed =
                         database.tags.removeIf { (it.guildId eq guild!!.id.value) and (it.name eq arguments.name) and ((it.creator eq user.id.value) or isAdmin) }
-                    val slashCommand = tagCommandMap[guild!!.id.value]!![arguments.name]!!
-                    applicationCommandRegistry.unregister(slashCommand)
+                    val slashCommand = tagCommandMap[guild!!.id.value]?.get(arguments.name)
+                    if (slashCommand != null)
+                        applicationCommandRegistry.unregister(slashCommand)
                     respond {
                         content = if (removed == 0)
                             "\u274c Tag does not exist, or you're not the owner of the tag."
@@ -383,15 +398,25 @@ class TagExtension : Extension() {
                     val member = memberFor(event)?.asMember()
                     passed = member?.let { isTrustedUser(it) } ?: false
                     if (!passed) {
+                        logger.debug("Failing check")
                         fail("You don't have permission to use this command.")
                     }
                 }
 
                 action {
+                    val name = arguments.name.lowercase()
+                    if (!namePattern.matcher(name).matches()) {
+                        channel.createMessage {
+                            content = "\u274c Error: invalid tag name \"${name}\"!"
+                            allowedMentions {
+                            }
+                        }
+                        return@action
+                    }
                     try {
                         val tag = Tag {
                             guildId = guild!!.id.value
-                            name = arguments.name
+                            this.name = name
                             creator = user!!.id.value
                             creationTime = Instant.now()
                             content = arguments.content
@@ -399,14 +424,14 @@ class TagExtension : Extension() {
                         database.tags.add(tag)
                         applicationCommandRegistry.register(createTagCommand(tag))
                         channel.createMessage {
-                            content = "\u2705 Successfully created tag \"${arguments.name}\""
+                            content = "\u2705 Successfully created tag \"${name}\""
                             allowedMentions {
                             }
                         }
 
                     } catch (_: SQLIntegrityConstraintViolationException) {
                         channel.createMessage {
-                            content = "\u274c Error: tag \"${arguments.name}\" already exists"
+                            content = "\u274c Error: tag \"${name}\" already exists"
                             allowedMentions {
                             }
                         }
@@ -475,7 +500,8 @@ class TagExtension : Extension() {
         event<ReadyEvent> {
             action {
                 val ids = kord.guilds.map { it.id.value }.toList()
-                database.tags.removeIf { it.guildId notInList ids }
+                if (ids.isNotEmpty())
+                    database.tags.removeIf { it.guildId notInList ids }
             }
         }
     }
