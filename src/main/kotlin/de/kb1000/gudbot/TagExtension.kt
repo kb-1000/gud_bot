@@ -5,10 +5,7 @@ import com.kotlindiscord.kord.extensions.checks.memberFor
 import com.kotlindiscord.kord.extensions.commands.Arguments
 import com.kotlindiscord.kord.extensions.commands.application.slash.PublicSlashCommand
 import com.kotlindiscord.kord.extensions.commands.application.slash.publicSubCommand
-import com.kotlindiscord.kord.extensions.commands.converters.impl.coalescedString
-import com.kotlindiscord.kord.extensions.commands.converters.impl.member
-import com.kotlindiscord.kord.extensions.commands.converters.impl.role
-import com.kotlindiscord.kord.extensions.commands.converters.impl.string
+import com.kotlindiscord.kord.extensions.commands.converters.impl.*
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.chatGroupCommand
 import com.kotlindiscord.kord.extensions.extensions.event
@@ -37,7 +34,7 @@ import java.util.regex.Pattern
 class TagExtension : Extension() {
     companion object : KLogging() {
         @JvmStatic
-        val namePattern = Pattern.compile("^[\\w-]{1,32}\$", Pattern.UNICODE_CHARACTER_CLASS)
+        val namePattern: Pattern = Pattern.compile("^[\\w-]{1,32}\$", Pattern.UNICODE_CHARACTER_CLASS)
     }
 
     override val name = "tags"
@@ -45,28 +42,49 @@ class TagExtension : Extension() {
     private val configExtension: ConfigExtension by lazy { bot.findExtension()!! }
 
     class TagContentArgs : Arguments() {
-        val name by string("name", "Name of the tag")
-        val content by coalescedString("content", "Content of the tag")
+        val name by string {
+            name = "name"
+            description = "Name of the tag"
+        }
+        val content by coalescingString {
+            name = "content"
+            description = "Content of the tag"
+        }
     }
 
     class TagNameArgs : Arguments() {
-        val name by string("name", "Name of the tag")
+        val name by string {
+            name ="name"
+            description ="Name of the tag"
+        }
     }
 
     class TrustMemberArgs : Arguments() {
-        val member by member("member", "Member to trust")
+        val member by member {
+            name = "member"
+            description = "Member to trust"
+        }
     }
 
     class TrustRoleArgs : Arguments() {
-        val role by role("role", "Role to trust")
+        val role by role {
+            name = "role"
+            description = "Role to trust"
+        }
     }
 
     class UntrustMemberArgs : Arguments() {
-        val member by member("member", "Member to untrust")
+        val member by member {
+            name = "member"
+            description = "Member to untrust"
+        }
     }
 
     class UntrustRoleArgs : Arguments() {
-        val role by role("role", "Role to untrust")
+        val role by role {
+            name = "role"
+            description = "Role to untrust"
+        }
     }
 
     private suspend fun createTagCommand(tag: Tag): PublicSlashCommand<Arguments> {

@@ -6,8 +6,6 @@ import com.kotlindiscord.kord.extensions.ExtensibleBot
 import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
 
-lateinit var owners: LongArray
-
 @OptIn(PrivilegedIntent::class)
 suspend fun main() {
     val bot = ExtensibleBot(config.token) {
@@ -15,7 +13,7 @@ suspend fun main() {
             config.presence?.let(this::playing)
         }
         applicationCommands {
-            config.testGuild?.let { this.defaultGuild(it.toLong()) }
+            config.testGuild?.let { this.defaultGuild(it) }
         }
 
         extensions {

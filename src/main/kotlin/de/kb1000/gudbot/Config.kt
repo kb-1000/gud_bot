@@ -7,8 +7,8 @@ import dev.kord.common.entity.Snowflake
 import dev.kord.core.event.gateway.ReadyEvent
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.nio.file.Files
 import kotlin.io.path.Path
+import kotlin.io.path.inputStream
 
 @Serializable
 data class Config(
@@ -17,14 +17,13 @@ data class Config(
     val token: String,
     val environment: String,
     @SerialName("testGuild")
-    @JvmField
     private val _testGuild: Long? = null,
 ) {
     val testGuild
         get() = _testGuild?.toULong()
 }
 
-private fun loadConfig() = Files.newInputStream(Path("config.yaml")).use {
+private fun loadConfig() = Path("config.yaml").inputStream().use {
     Yaml.default.decodeFromStream(Config.serializer(), it)
 }
 
