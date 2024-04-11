@@ -5,12 +5,15 @@ import com.kotlindiscord.kord.extensions.checks.memberFor
 import com.kotlindiscord.kord.extensions.commands.Arguments
 import com.kotlindiscord.kord.extensions.commands.application.slash.PublicSlashCommand
 import com.kotlindiscord.kord.extensions.commands.application.slash.publicSubCommand
-import com.kotlindiscord.kord.extensions.commands.converters.impl.*
+import com.kotlindiscord.kord.extensions.commands.converters.impl.coalescingString
+import com.kotlindiscord.kord.extensions.commands.converters.impl.member
+import com.kotlindiscord.kord.extensions.commands.converters.impl.role
+import com.kotlindiscord.kord.extensions.commands.converters.impl.string
+import com.kotlindiscord.kord.extensions.components.forms.ModalForm
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.chatGroupCommand
 import com.kotlindiscord.kord.extensions.extensions.event
 import com.kotlindiscord.kord.extensions.extensions.publicSlashCommand
-import com.kotlindiscord.kord.extensions.types.respond
 import com.kotlindiscord.kord.extensions.utils.hasPermission
 import de.kb1000.gudbot.database.*
 import dev.kord.common.entity.Permission
@@ -19,8 +22,8 @@ import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.entity.Member
 import dev.kord.core.event.gateway.ReadyEvent
 import dev.kord.rest.Image
-import dev.kord.rest.builder.message.create.allowedMentions
-import dev.kord.rest.builder.message.create.embed
+import dev.kord.rest.builder.message.allowedMentions
+import dev.kord.rest.builder.message.embed
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import mu.KLogging
@@ -38,7 +41,7 @@ class TagExtension : Extension() {
     }
 
     override val name = "tags"
-    private val tagCommandMap = mutableMapOf<ULong, MutableMap<String, PublicSlashCommand<Arguments>>>()
+    private val tagCommandMap = mutableMapOf<ULong, MutableMap<String, PublicSlashCommand<Arguments, ModalForm>>>()
     private val configExtension: ConfigExtension by lazy { bot.findExtension()!! }
 
     class TagContentArgs : Arguments() {
@@ -54,8 +57,8 @@ class TagExtension : Extension() {
 
     class TagNameArgs : Arguments() {
         val name by string {
-            name ="name"
-            description ="Name of the tag"
+            name = "name"
+            description = "Name of the tag"
         }
     }
 
@@ -87,8 +90,8 @@ class TagExtension : Extension() {
         }
     }
 
-    private suspend fun createTagCommand(tag: Tag): PublicSlashCommand<Arguments> {
-        val command = PublicSlashCommand<Arguments>(this, null, null, null)
+    private suspend fun createTagCommand(tag: Tag): PublicSlashCommand<Arguments, ModalForm> {
+        val command = PublicSlashCommand<Arguments, ModalForm>(this, null, null, null)
         command.run {
             name = tag.name
             description = "\"${tag.name}\" tag"
@@ -259,14 +262,14 @@ class TagExtension : Extension() {
                         })
                         respond {
                             content =
-                                "\u2705 Successfully added ${arguments.member.nicknameMention} (${arguments.member.username}) to the trust list."
+                                "\u2705 Successfully added ${arguments.member.mention} (${arguments.member.username}) to the trust list."
                             allowedMentions {
                             }
                         }
                     } catch (_: SQLIntegrityConstraintViolationException) {
                         respond {
                             content =
-                                "\u274c ${arguments.member.nicknameMention} (${arguments.member.username}) is already on the trust list."
+                                "\u274c ${arguments.member.mention} (${arguments.member.username}) is already on the trust list."
                             allowedMentions {
                             }
                         }
@@ -328,14 +331,14 @@ class TagExtension : Extension() {
                     if (database.trustedUsers.removeIf { (it.guildId eq arguments.member.guildId.value) and (it.userId eq arguments.member.id.value) } != 0) {
                         respond {
                             content =
-                                "\u2705 Successfully removed ${arguments.member.nicknameMention} (${arguments.member.username}) from the trust list."
+                                "\u2705 Successfully removed ${arguments.member.mention} (${arguments.member.username}) from the trust list."
                             allowedMentions {
                             }
                         }
                     } else {
                         respond {
                             content =
-                                "\u274c ${arguments.member.nicknameMention} (${arguments.member.username}) is not on the trust list."
+                                "\u274c ${arguments.member.mention} (${arguments.member.username}) is not on the trust list."
                             allowedMentions {
                             }
                         }
@@ -389,7 +392,7 @@ class TagExtension : Extension() {
                                 .joinToString("\n")
                             author {
                                 name = guild.name
-                                icon = guild.getIconUrl(Image.Format.WEBP)
+                                icon = guild.icon?.cdnUrl?.toUrl { format = Image.Format.WEBP }
                             }
                         }
 

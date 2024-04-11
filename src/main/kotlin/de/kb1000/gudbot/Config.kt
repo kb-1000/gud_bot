@@ -1,6 +1,8 @@
 package de.kb1000.gudbot
 
+import ch.qos.logback.core.PropertyDefinerBase
 import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.decodeFromStream
 import com.kotlindiscord.kord.extensions.extensions.Extension
 import com.kotlindiscord.kord.extensions.extensions.event
 import dev.kord.common.entity.Snowflake
@@ -29,6 +31,13 @@ private fun loadConfig() = Path("config.yaml").inputStream().use {
 
 val config by lazy { loadConfig() }
 
+class DefaultLevelPropertyDefiner : PropertyDefinerBase() {
+    override fun getPropertyValue() = when (config.environment) {
+        "debug" -> "DEBUG"
+        else -> "INFO"
+    }
+}
+
 
 class ConfigExtension : Extension() {
     override val name = "config"
@@ -42,10 +51,9 @@ class ConfigExtension : Extension() {
                 val appOwner = appInfo.ownerId
                 val teamOwner = appInfo.team?.ownerUserId
                 val teamUsers = appInfo.team?.members?.map { it.userId } ?: listOf()
-                val mutableOwnerIds = mutableListOf(appOwner, *teamUsers.toTypedArray())
-                if (teamOwner != null) {
-                    mutableOwnerIds.add(teamOwner)
-                }
+                val mutableOwnerIds = teamUsers.toMutableList()
+                if (teamOwner != null) mutableOwnerIds.add(teamOwner)
+                if (appOwner != null) mutableOwnerIds.add(appOwner)
                 ownerIds = mutableOwnerIds.toSet()
             }
         }

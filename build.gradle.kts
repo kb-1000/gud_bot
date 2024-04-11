@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.serialization") version "1.6.21"
+    kotlin("jvm") version "1.9.23"
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 repositories {
@@ -14,26 +14,26 @@ repositories {
 }
 
 dependencies {
-    implementation(enforcedPlatform(kotlin("bom")))
-    implementation(enforcedPlatform("org.jetbrains:annotations:23.0.0"))
-    implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.3.2"))
-    implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.1"))
+    implementation(platform(kotlin("bom")))
+    implementation(platform("org.jetbrains:annotations:24.1.0"))
+    implementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.6.3"))
+    implementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.8.0"))
 
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib"))
 
-    implementation("com.charleskorn.kaml:kaml:0.43.0")
+    implementation("com.charleskorn.kaml:kaml:0.58.0")
 
-    implementation("org.codehaus.groovy:groovy:3.0.10")
-    implementation("ch.qos.logback:logback-classic:1.2.8")
-    implementation("io.github.microutils:kotlin-logging-jvm:2.1.21")
+    implementation("org.codehaus.groovy:groovy:3.0.11")
+    implementation("ch.qos.logback:logback-classic:1.5.4")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
-    implementation("com.zaxxer:HikariCP:5.0.1")
-    implementation("org.ktorm:ktorm-core:3.4.1")
-    implementation("org.ktorm:ktorm-support-postgresql:3.4.1")
-    implementation("org.postgresql:postgresql:42.3.4")
+    implementation("com.zaxxer:HikariCP:5.1.0")
+    implementation("org.ktorm:ktorm-core:3.6.0")
+    implementation("org.ktorm:ktorm-support-postgresql:3.6.0")
+    implementation("org.postgresql:postgresql:42.7.3")
 
-    implementation("com.kotlindiscord.kord.extensions:kord-extensions:1.5.2-RC1")
-    implementation("com.kotlindiscord.kord.extensions:unsafe:1.5.2-RC1")
+    implementation("com.kotlindiscord.kord.extensions:kord-extensions:1.6.0")
+    implementation("com.kotlindiscord.kord.extensions:unsafe:1.6.0")
 }
 
 application {
@@ -42,8 +42,6 @@ application {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
-
-    kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
 }
 
 java {

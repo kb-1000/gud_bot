@@ -9,7 +9,7 @@ import ch.qos.logback.core.rolling.RolloverFailure
 class StartupTimeBasedTriggeringPolicy<E> : DefaultTimeBasedFileNamingAndTriggeringPolicy<E>() {
     override fun start() {
         super.start()
-        nextCheck = 0L
+        atomicNextCheck.set(0L)
         isTriggeringEvent(null, null)
         try {
             tbrp.rollover()
